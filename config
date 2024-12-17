@@ -1,34 +1,43 @@
 local wezterm = require("wezterm")
-local dimmer = { brightness = 0.02, saturation = 0.9, hue = 0.9 }
+local dimmer = { brightness = 0.01, saturation = 0.5, hue = 0.5 }
+local dimmer_pink = { brightness = 0.01, saturation = 0.1, hue = 0.9 }
+local dimmer_blue = { brightness = 0.01, saturation = 0.1, hue = 0.6 }
+local dimmer_green = { brightness = 0.01, saturation = 0.1, hue = 0.3 }
+local dimmer_yellow = { brightness = 0.01, saturation = 0.1, hue = 0.15 }
 local act = wezterm.action
 
 return {
 	-- Define the launch menu with options for PowerShell and WSL
-	-- launch_menu = {
-	-- 	{
-	-- 		label = "Windows PowerShell",
-	-- 		args = { "pwsh" },
-	-- 	},
-	-- },
+	launch_menu = {
+		{
+			label = "Windows PowerShell",
+			args = { "pwsh" },
+		},
+	},
 
-	default_prog = { "pwsh" },
+	default_prog = { "WSL" },
 	colors = require("cyberdream"),
 	hide_tab_bar_if_only_one_tab = true,
 
 	-- Other configurations
 	freetype_load_flags = "NO_HINTING",
-	font = wezterm.font_with_fallback({ "CaskaydiaCove Nerd Font", "JetBrains Mono" }, { weight = "Medium" }),
-	font_size = 15.0,
+  font = wezterm.font_with_fallback {
+    { family = 'FiraCode Nerd Font Mono', weight = 'Medium' },
+    { family = 'JetBrains Mono', weight = 'Medium' },
+    { family = 'CaskaydiaCove Nerd Font', weight = 'Bold' },
+  },
+	font_size = 18.0,
 
 	keys = {
-		{ key = "p", mods = "CTRL|SHIFT", action = act({ PasteFrom = "Clipboard" }) },
+		{ key = "v", mods = "CTRL|SHIFT", action = act({ PasteFrom = "Clipboard" }) },
+    { key = "c", mods = "CTRL|SHIFT", action = act({ CopyTo = "Clipboard" }) },
 		-- Keybinding to open the launch menu manually
 		{ key = "l", mods = "CTRL|SHIFT", action = act.ShowLauncher },
 	},
 
 	window_decorations = "RESIZE",
 	window_frame = {
-		font = wezterm.font_with_fallback({ "CaskaydiaCove Nerd Font", "JetBrains Mono" }, { weight = "Medium" }),
+		font = wezterm.font("JetBrains Mono", { weight = "Medium" }),
 	},
 
 	-- window_background_opacity = 0.7, -- Adjust the opacity as desired (0.0 to 1.0)
@@ -44,7 +53,8 @@ return {
 		-- This is the deepest/back-most layer. It will be rendered first
 		{
 			source = {
-				File = "C:\\Users\\bstrang\\Pictures\\Alien_Ship_bg_vert_images\\Backgrounds\\spaceship_bg_1.png",
+				--File = "C:\\Users\\burke\\Pictures\\Alien_Ship_bg_vert_images\\Backgrounds\\spaceship_bg_1.png",
+				File = "C:\\Users\\burke\\OneDrive\\Pictures\\Alien_Ship_bg_vert_images\\Backgrounds\\spaceship_bg_1.png",
 			},
 			-- The texture tiles vertically but not horizontally.
 			-- When we repeat it, mirror it so that it appears "more seamless".
@@ -61,7 +71,7 @@ return {
 		-- Subsequent layers are rendered over the top of each other
 		{
 			source = {
-				File = "C:\\Users\\bstrang\\Pictures\\Alien_Ship_bg_vert_images\\Overlays\\overlay_1_spines.png",
+				File = "C:\\Users\\burke\\OneDrive\\Pictures\\Alien_Ship_bg_vert_images\\Overlays\\overlay_1_spines.png",
 			},
 			width = "100%",
 			repeat_x = "NoRepeat",
@@ -70,15 +80,14 @@ return {
 			-- two screens.
 			vertical_align = "Bottom",
 			repeat_y_size = "200%",
-			hsb = dimmer,
-
+			hsb = dimmer_pink,
 			-- The parallax factor is higher than the background layer, so this
 			-- one will appear to be closer when we scroll
 			attachment = { Parallax = 0.2 },
 		},
 		{
 			source = {
-				File = "C:\\Users\\bstrang\\Pictures\\Alien_Ship_bg_vert_images\\Overlays\\overlay_2_alienball.png",
+				File = "C:\\Users\\burke\\OneDrive\\Pictures\\Alien_Ship_bg_vert_images\\Overlays\\overlay_2_alienball.png",
 			},
 			width = "100%",
 			repeat_x = "NoRepeat",
@@ -86,31 +95,31 @@ return {
 			-- start at 10% of the screen and repeat every 2 screens
 			vertical_offset = "10%",
 			repeat_y_size = "200%",
-			hsb = dimmer,
+			hsb = dimmer_blue,
 			attachment = { Parallax = 0.3 },
 		},
 		{
 			source = {
-				File = "C:\\Users\\bstrang\\Pictures\\Alien_Ship_bg_vert_images\\Overlays\\overlay_3_lobster.png",
+				File = "C:\\Users\\burke\\OneDrive\\Pictures\\Alien_Ship_bg_vert_images\\Overlays\\overlay_3_lobster.png",
 			},
 			width = "100%",
 			repeat_x = "NoRepeat",
 
 			vertical_offset = "30%",
 			repeat_y_size = "200%",
-			hsb = dimmer,
+			hsb = dimmer_green,
 			attachment = { Parallax = 0.4 },
 		},
 		{
 			source = {
-				File = "C:\\Users\\bstrang\\Pictures\\Alien_Ship_bg_vert_images\\Overlays\\overlay_4_spiderlegs.png",
+				File = "C:\\Users\\burke\\OneDrive\\Pictures\\Alien_Ship_bg_vert_images\\Overlays\\overlay_4_spiderlegs.png",
 			},
 			width = "100%",
 			repeat_x = "NoRepeat",
 
 			vertical_offset = "50%",
 			repeat_y_size = "150%",
-			hsb = dimmer,
+			hsb = dimmer_yellow,
 			attachment = { Parallax = 0.5 },
 		},
 	},
