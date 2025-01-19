@@ -1,13 +1,37 @@
 local wezterm = require("wezterm")
-local dimmer = { brightness = 0.01, saturation = 0.5, hue = 0.5 }
-local dimmer_pink = { brightness = 0.01, saturation = 0.1, hue = 0.9 }
-local dimmer_blue = { brightness = 0.01, saturation = 0.1, hue = 0.6 }
-local dimmer_green = { brightness = 0.01, saturation = 0.1, hue = 0.3 }
-local dimmer_yellow = { brightness = 0.01, saturation = 0.1, hue = 0.15 }
 local act = wezterm.action
 
+local dracula = {
+	background = "#1A1A2E", -- Deep Space Blue
+	foreground = "#5A9CA6", -- Light Lavender (Pastel)
+	cursor_bg = "#6272a4", -- Neon Pink (Cyberpunk)
+	cursor_border = "#F0E6F6", -- Light Lavender (Pastel)
+	cursor_fg = "#111A25", -- Deep Space Blue
+	selection_bg = "#3E3E5E", -- Muted Indigo
+	selection_fg = "#C0E6F6", -- Light Lavender (Pastel)
+	ansi = {
+		"#2E2E3E", -- Muted Dark Blue
+		"#D77FD7", -- Muted Pink
+		"#3E3E5E", -- Muted Indigo
+		"#A77FA7", -- Muted Soft Pink
+		"#00BFBF", -- Muted Cyan
+		"#A71585", -- Muted Purple
+		"#2FFF14", -- Muted Green
+		"#D0D6D6", -- Muted Lavender
+	},
+	brights = {
+		"#5A5A6A", -- Muted Gray
+		"#D77FD7", -- Muted Pink
+		"#7FBF7F", -- Muted Green
+		"#D7B9A9", -- Muted Peach
+		"#00AFAF", -- Muted Cyan
+		"#A71585", -- Muted Purple
+		"#2FFF14", -- Muted Green
+		"#E0E0E0", -- Muted White
+	},
+}
+
 return {
-	-- Define the launch menu with options for PowerShell and WSL
 	launch_menu = {
 		{
 			label = "Windows PowerShell",
@@ -18,113 +42,46 @@ return {
 	max_fps = 120,
 	animation_fps = 120,
 
-
 	default_prog = { "WSL" },
-	colors = require("cyberdream"),
 	hide_tab_bar_if_only_one_tab = true,
 
-	-- Other configurations
+	colors = {
+		background = dracula.background,
+		foreground = dracula.foreground,
+		cursor_bg = dracula.cursor_bg,
+		cursor_border = dracula.cursor_border,
+		cursor_fg = dracula.cursor_fg,
+		selection_bg = dracula.selection_bg,
+		selection_fg = dracula.selection_fg,
+
+		ansi = dracula.ansi,
+		brights = dracula.brights,
+	},
+
 	freetype_load_flags = "NO_HINTING",
-  font = wezterm.font_with_fallback {
-    { family = 'FiraCode Nerd Font Mono', weight = 'Medium' },
-    { family = 'JetBrains Mono', weight = 'Medium' },
-    { family = 'CaskaydiaCove Nerd Font', weight = 'Bold' },
-  },
+	font = wezterm.font_with_fallback({
+		{ family = "FiraCode Nerd Font", weight = "Medium" },
+		{ family = "JetBrains Mono", weight = "Medium" },
+		{ family = "CaskaydiaCove Nerd Font", weight = "Bold" },
+	}),
 	font_size = 18.0,
 
 	keys = {
 		{ key = "v", mods = "CTRL|SHIFT", action = act({ PasteFrom = "Clipboard" }) },
-    { key = "c", mods = "CTRL|SHIFT", action = act({ CopyTo = "Clipboard" }) },
-		-- Keybinding to open the launch menu manually
+		{ key = "c", mods = "CTRL|SHIFT", action = act({ CopyTo = "Clipboard" }) },
 		{ key = "l", mods = "CTRL|SHIFT", action = act.ShowLauncher },
 	},
 
 	window_decorations = "RESIZE",
 	window_frame = {
-		font = wezterm.font("JetBrains Mono", { weight = "Medium" }),
+		font = wezterm.font("FiraCode Nerd Font Mono", { weight = "Medium" }),
 	},
-
-	-- window_background_opacity = 0.7, -- Adjust the opacity as desired (0.0 to 1.0)
-	-- window_background_image_hsb = {
-	-- brightness = 0.9, -- Adjust the brightness (0.0 to 1.0)
-	-- hue = 0.9, -- Adjust the hue (0.0 to 1.0)
-	-- saturation = 1, -- Adjust the saturation (0.0 to 1.0)
-	-- },
-	-- NOTE: this is what creates the scolling background
-	-- enable_scroll_bar = true,
-	-- min_scroll_bar_height = '2cell',
 	background = {
-		-- This is the deepest/back-most layer. It will be rendered first
 		{
 			source = {
-				--File = "C:\\Users\\burke\\Pictures\\Alien_Ship_bg_vert_images\\Backgrounds\\spaceship_bg_1.png",
-				File = "C:\\Users\\burke\\OneDrive\\Pictures\\Alien_Ship_bg_vert_images\\Backgrounds\\spaceship_bg_1.png",
+				File = "C:\\Users\\bstrang\\Pictures\\bluesquares1.jpg",
 			},
-			-- The texture tiles vertically but not horizontally.
-			-- When we repeat it, mirror it so that it appears "more seamless".
-			-- An alternative to this is to set `width = "100%"` and have
-			-- it stretch across the display
-			repeat_x = "Mirror",
-			hsb = dimmer,
-			-- When the viewport scrolls, move this layer 10% of the number of
-			-- pixels moved by the main viewport. This makes it appear to be
-			-- further behind the text.
-			attachment = { Parallax = 0.1 },
-			-- blur = 0.5,
-		},
-		-- Subsequent layers are rendered over the top of each other
-		{
-			source = {
-				File = "C:\\Users\\burke\\OneDrive\\Pictures\\Alien_Ship_bg_vert_images\\Overlays\\overlay_1_spines.png",
-			},
-			width = "100%",
-			repeat_x = "NoRepeat",
-
-			-- position the spins starting at the bottom, and repeating every
-			-- two screens.
-			vertical_align = "Bottom",
-			repeat_y_size = "200%",
-			hsb = dimmer_pink,
-			-- The parallax factor is higher than the background layer, so this
-			-- one will appear to be closer when we scroll
-			attachment = { Parallax = 0.2 },
-		},
-		{
-			source = {
-				File = "C:\\Users\\burke\\OneDrive\\Pictures\\Alien_Ship_bg_vert_images\\Overlays\\overlay_2_alienball.png",
-			},
-			width = "100%",
-			repeat_x = "NoRepeat",
-
-			-- start at 10% of the screen and repeat every 2 screens
-			vertical_offset = "10%",
-			repeat_y_size = "200%",
-			hsb = dimmer_blue,
-			attachment = { Parallax = 0.3 },
-		},
-		{
-			source = {
-				File = "C:\\Users\\burke\\OneDrive\\Pictures\\Alien_Ship_bg_vert_images\\Overlays\\overlay_3_lobster.png",
-			},
-			width = "100%",
-			repeat_x = "NoRepeat",
-
-			vertical_offset = "30%",
-			repeat_y_size = "200%",
-			hsb = dimmer_green,
-			attachment = { Parallax = 0.4 },
-		},
-		{
-			source = {
-				File = "C:\\Users\\burke\\OneDrive\\Pictures\\Alien_Ship_bg_vert_images\\Overlays\\overlay_4_spiderlegs.png",
-			},
-			width = "100%",
-			repeat_x = "NoRepeat",
-
-			vertical_offset = "50%",
-			repeat_y_size = "150%",
-			hsb = dimmer_yellow,
-			attachment = { Parallax = 0.5 },
+			hsb = { brightness = 0.03, saturation = 0.8, hue = 0.8 },
 		},
 	},
 }
